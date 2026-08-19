@@ -1,7 +1,7 @@
 ---
 heading: Teaching
 sub: >-
-  Seminars
+  All my teaching materials are openly accessible Jupyter Books.
 description: Seminars materials
 
 # Box widgets
@@ -27,7 +27,7 @@ courses:
       lecture materials.
 
   - code: psy300 · ds300
-    title: Statistical Methods
+    title: Statistical Learning
     programme: Data Science & Machine Learning MSc
     url: /psy300/
     color: "#6b4c9a"

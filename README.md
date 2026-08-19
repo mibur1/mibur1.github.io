@@ -7,9 +7,7 @@ Personal academic website. Static HTML generated from markdown through a Python 
 
 ```bash
 pip install -r requirements.txt
-
-python build.py # write _site/ without serving
-python build.py --serve --port 8787  # serve at http://localhost:8787
+python build.py --serve # build and serve at http://localhost:8000
 ```
 
 
@@ -20,8 +18,7 @@ python build.py --serve --port 8787  # serve at http://localhost:8787
 | `site.yaml`                           | Name, role, links, navigation             |
 | `content/*.md`                        | Page content — edit these, never the HTML |
 | `content/posts/*.md`                  | Blog posts, named `YYYY-MM-DD-slug.md`    |
-| `content/publications.json`           | Generated from ORCID — do not hand-edit   |
-| `content/publications.overrides.yml`  | Manual curation of the publication list   |
+| `content/publications.json`           | Scraped from Scholar — do not hand-edit   |
 | `templates/`                          | Jinja2 templates                          |
 | `static/css/tokens.css`               | The entire look of the site               |
 | `static/css/site.css`                 | Layout and components                     |
@@ -46,9 +43,9 @@ python build.py --serve --port 8787  # serve at http://localhost:8787
     ---
     ```
 
-- **Publications**: Edit `content/publications.overrides.yml`
-    - Supports `hide`, `superseded_by` (preprints), `code_url`, `pin`, and metadata corrections.
-    - Refresh: `python scripts/fetch_publications.py` to pull from ORCID and OpenAlex, runs weekly.
+- **Publications**:`python scripts/fetch_publications.py` scrapes Google Scholar
+    -Recovers DOIs via Crossref and open-access links via OpenAlex.
+    - Run locally and commit the JSON; Scholar blocks CI runners.
 - **Design**: `static/css/tokens.css`.
 - **Homepage network**: tunables live in the `CFG` block at the top of `static/js/network.js`.
   Which nodes appear is driven by the `nav` list in `site.yaml`, not by the script.

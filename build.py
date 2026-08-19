@@ -103,15 +103,36 @@ def load_publications() -> tuple[list[dict], str]:
             continue
 
         entry = dict(pub)
-        for key in ("title", "venue", "year", "code_url", "note", "pin"):
+
+        # Plain overrides, applied as-is.
+        for key in ("title", "venue", "year", "citations", "type",
+                    "code_url", "data_url", "note", "pin", "url"):
             if key in ov:
                 entry[key] = ov[key]
 
-        if entry.get("doi"):
-            entry["url"] = entry.get("oa_url") or f"https://doi.org/{entry['doi']}"
+        # Friendlier aliases for the link fields.
+        if "pdf_url" in ov:
+            entry["oa_url"] = ov["pdf_url"]
+        if "preprint_url" in ov:
+            entry["preprint_url"] = ov["preprint_url"]
+        if "preprint_doi" in ov:
+            entry["preprint_doi"] = ov["preprint_doi"]
+
+        # The title always resolves to the version of record, never to a
+        # preprint or a repository copy. Override `url:` to change that.
+        if not entry.get("url") and entry.get("doi"):
+            entry["url"] = f"https://doi.org/{entry['doi']}"
         result.append(entry)
 
-    result.sort(key=lambda e: (-(e.get("year") or 0), e.get("pin", 100)))
+    # Newest year first; within a year, newest publication date first, matching
+    # Google Scholar's "sort by year" view. Papers with no exact date fall back
+    # to the order Scholar returned them in. `pin` overrides both.
+    result.sort(key=lambda e: (
+        -(e.get("year") or 0),
+        e.get("pin", 100),
+        -int((e.get("date") or "0000-00-00").replace("-", "")),
+        e.get("order", 0),
+    ))
     return result, fetched
 
 
@@ -230,6 +251,7 @@ def build(serve: bool = False, port: int = 8000) -> None:
 
     # --- feeds and robots ---
     write(OUT / "blog" / "feed.xml", env.get_template("feed.xml").render(**ctx))
+    write(OUT / "feed.xsl", env.get_template("feed.xsl").render(**ctx))
     write(OUT / "sitemap.xml", env.get_template("sitemap.xml").render(urls=urls, **ctx))
     write(OUT / "robots.txt",
           f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}/sitemap.xml\n")
@@ -287,7 +309,7 @@ def make_bibtex(publications: list[dict], site: dict) -> str:
     """Serialize the curated list to BibTeX."""
     out = [
         "% Publications of " + site["name"],
-        "% Generated from ORCID + OpenAlex, curated via publications.overrides.yml",
+        "% Generated from Google Scholar, curated via publications.overrides.yml",
         "% " + site["url"] + "/publications.bib",
         "",
     ]

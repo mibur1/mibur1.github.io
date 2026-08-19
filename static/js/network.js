@@ -16,7 +16,7 @@
     linkOpacity: 0.6,    // opacity of a zero-length link
     lineWidth: 1,
 
-    speed: 0.010,        // canvas heights/seconds; .025 => crosses canvas height in ~40s.
+    speed: 0.008,        // canvas heights/seconds; .01 => crosses canvas height in 100s.
     pageSpeed: 0.44,     // page nodes drift at this fraction of it
     circleScale: 1.0,    // Circular well for the page nodes
     centerPull: 1.2,     // per second: exponential recovery rate toward the circle

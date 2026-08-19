@@ -1,13 +1,139 @@
 {
-  "orcid": "0000-0002-6268-3527",
+  "source": "google-scholar",
+  "scholar": "5Ppo7twAAAAJ",
   "fetched": "2026-08-19",
   "publications": [
     {
-      "doi": "10.1162/imag.a.1122",
-      "title": "The Comet Toolbox: Improving robustness in network neuroscience through multiverse analysis",
+      "title": "Dopamine-related alterations in functional brain network dynamic reconfiguration in Parkinson’s disease",
+      "year": 2026,
+      "venue": "npj Parkinson s Disease",
+      "citations": 0,
+      "order": 0,
+      "doi": "10.1038/s41531-026-01466-w",
+      "authors": [
+        {
+          "name": "AmirHussein Abdolalizadeh",
+          "is_me": false
+        },
+        {
+          "name": "Micha Burkhardt",
+          "is_me": true
+        },
+        {
+          "name": "Paria Jahansa",
+          "is_me": false
+        },
+        {
+          "name": "Carsten Gießing",
+          "is_me": false
+        },
+        {
+          "name": "Karsten Witt",
+          "is_me": false
+        },
+        {
+          "name": "Christiane M. Thiel",
+          "is_me": false
+        }
+      ],
+      "oa_url": "https://www.nature.com/articles/s41531-026-01466-w.pdf",
+      "oa_status": "gold",
+      "type": "article",
+      "date": "2026-07-21"
+    },
+    {
+      "title": "Multicurious: A Multidisciplinary Guide to Multiverse Analysis",
+      "year": 2026,
+      "venue": "Advances in Methods and Practices in Psychological Science",
+      "citations": 9,
+      "order": 1,
+      "doi": "10.1177/25152459261434881",
+      "authors": [
+        {
+          "name": "Cassie Ann Short",
+          "is_me": false
+        },
+        {
+          "name": "Nate Breznau",
+          "is_me": false
+        },
+        {
+          "name": "Maria Bruntsch",
+          "is_me": false
+        },
+        {
+          "name": "Micha Burkhardt",
+          "is_me": true
+        },
+        {
+          "name": "Niko A. Busch",
+          "is_me": false
+        },
+        {
+          "name": "Elena Čėsnaitė",
+          "is_me": false
+        },
+        {
+          "name": "Maximilian Frank",
+          "is_me": false
+        },
+        {
+          "name": "Carsten Gießing",
+          "is_me": false
+        },
+        {
+          "name": "Daniel Krähmer",
+          "is_me": false
+        },
+        {
+          "name": "Daniel Kristanto",
+          "is_me": false
+        },
+        {
+          "name": "Tina B. Lonsdorf",
+          "is_me": false
+        },
+        {
+          "name": "Claudia Neuendorf",
+          "is_me": false
+        },
+        {
+          "name": "Hung Hoang Viet Nguyen",
+          "is_me": false
+        },
+        {
+          "name": "Manuel Rausch",
+          "is_me": false
+        },
+        {
+          "name": "Xenia Schmalz",
+          "is_me": false
+        },
+        {
+          "name": "Andreas Schneck",
+          "is_me": false
+        },
+        {
+          "name": "Cem Tabakci",
+          "is_me": false
+        },
+        {
+          "name": "Andrea Hildebrandt",
+          "is_me": false
+        }
+      ],
+      "oa_url": "https://doi.org/10.1177/25152459261434881",
+      "oa_status": "diamond",
+      "type": "article",
+      "date": "2026-04-01"
+    },
+    {
+      "title": "The Comet toolbox: Improving robustness in network neuroscience through multiverse analysis",
       "year": 2026,
       "venue": "Imaging Neuroscience",
-      "type": "journal-article",
+      "citations": 4,
+      "order": 2,
+      "doi": "10.1162/imag.a.1122",
       "authors": [
         {
           "name": "Micha Burkhardt",
@@ -20,33 +146,108 @@
       ],
       "oa_url": "https://direct.mit.edu/imag/article-pdf/doi/10.1162/IMAG.a.1122/2575506/imag.a.1122.pdf",
       "oa_status": "diamond",
-      "citations": 2
+      "type": "article",
+      "date": "2026-01-01"
     },
     {
-      "doi": "10.1101/2024.01.21.576546",
-      "title": "The Comet Toolbox: Improving Robustness in Network Neuroscience Through Multiverse Analysis",
-      "year": 2024,
-      "venue": "bioRxiv (Cold Spring Harbor Laboratory)",
-      "type": "preprint",
+      "title": "Structural network topology and cognitive control in very preterm born young adults",
+      "year": 2026,
+      "venue": "NeuroImage Clinical",
+      "citations": 0,
+      "order": 3,
+      "doi": "10.1016/j.nicl.2026.103952",
       "authors": [
+        {
+          "name": "Merle Johanna Marek",
+          "is_me": false
+        },
+        {
+          "name": "D. Wolke",
+          "is_me": false
+        },
+        {
+          "name": "Christian Sorg",
+          "is_me": false
+        },
+        {
+          "name": "Jil Wendt",
+          "is_me": false
+        },
+        {
+          "name": "Aurore Menegaux",
+          "is_me": false
+        },
+        {
+          "name": "Dennis Hedderich",
+          "is_me": false
+        },
+        {
+          "name": "Peter Bartmann",
+          "is_me": false
+        },
         {
           "name": "Micha Burkhardt",
           "is_me": true
         },
         {
-          "name": "Carsten Gießing",
+          "name": "Andrea Hildebrandt",
+          "is_me": false
+        },
+        {
+          "name": "Axel Heep",
           "is_me": false
         }
       ],
-      "oa_url": "https://www.biorxiv.org/content/biorxiv/early/2024/01/22/2024.01.21.576546.full.pdf",
-      "oa_status": "green"
+      "oa_url": "https://doi.org/10.1016/j.nicl.2026.103952",
+      "oa_status": "gold",
+      "type": "article",
+      "date": "2026-01-01"
     },
     {
-      "doi": "10.1016/j.neunet.2023.08.034",
+      "title": "The multiverse of data preprocessing and analysis in graph-based fMRI: A systematic literature review of analytical choices fed into a decision support tool for informed analysis",
+      "year": 2024,
+      "venue": "Neuroscience & Biobehavioral Reviews",
+      "citations": 25,
+      "order": 4,
+      "doi": "10.1016/j.neubiorev.2024.105846",
+      "authors": [
+        {
+          "name": "Daniel Kristanto",
+          "is_me": false
+        },
+        {
+          "name": "Micha Burkhardt",
+          "is_me": true
+        },
+        {
+          "name": "Christiane M. Thiel",
+          "is_me": false
+        },
+        {
+          "name": "Stefan Debener",
+          "is_me": false
+        },
+        {
+          "name": "Carsten Gießing",
+          "is_me": false
+        },
+        {
+          "name": "Andrea Hildebrandt",
+          "is_me": false
+        }
+      ],
+      "oa_url": "https://doi.org/10.1016/j.neubiorev.2024.105846",
+      "oa_status": "hybrid",
+      "type": "review",
+      "date": "2024-08-06"
+    },
+    {
       "title": "A large-scale neurocomputational model of spatial cognition integrating memory with vision",
       "year": 2023,
       "venue": "Neural Networks",
-      "type": "journal-article",
+      "citations": 14,
+      "order": 5,
+      "doi": "10.1016/j.neunet.2023.08.034",
       "authors": [
         {
           "name": "Micha Burkhardt",
@@ -87,30 +288,8 @@
       ],
       "oa_url": "https://discovery.ucl.ac.uk/10175806/1/Burkhardt_2023_accepted.pdf",
       "oa_status": "green",
-      "citations": 5
-    },
-    {
-      "doi": "10.1089/brain.2020.1005",
-      "title": "Robust Correlation for Link Definition in Resting-State fMRI Brain Networks Can Reduce Motion-Related Artifacts",
-      "year": 2022,
-      "venue": "Brain Connectivity",
-      "type": "journal-article",
-      "authors": [
-        {
-          "name": "Micha Burkhardt",
-          "is_me": true
-        },
-        {
-          "name": "Christiane M. Thiel",
-          "is_me": false
-        },
-        {
-          "name": "Carsten Gießing",
-          "is_me": false
-        }
-      ],
-      "oa_status": "closed",
-      "citations": 2
+      "type": "article",
+      "date": "2023-08-23"
     }
   ]
 }

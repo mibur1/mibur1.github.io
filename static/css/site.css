@@ -255,6 +255,19 @@ a:hover { color: var(--accent); }
 
 /* ---------- Page header ---------- */
 .page-head { padding-block: var(--sp-8) var(--sp-6); border-bottom: 1px solid var(--rule-soft); }
+
+/* Pages with an action row (Publications, CV) drop the rule — the buttons
+   already separate the header from what follows, and on Publications the
+   first year heading brings its own line right underneath. */
+.page-head:has(.pub-actions),
+.page-head:has(.cv-actions) {
+  border-bottom: 0;
+  padding-bottom: var(--sp-4);   /* was --sp-6; no rule to sit under */
+}
+
+/* The first year heading follows the action row directly, so it does not need
+   the full separation the later ones use between groups. */
+.pub-year:first-of-type { margin-top: var(--sp-5); }
 .page-head__kicker {
   font-family: var(--font-mono); font-size: var(--step--1);
   text-transform: uppercase; letter-spacing: 0.14em;
@@ -314,12 +327,19 @@ a:hover { color: var(--accent); }
 
 
 /* ---------- Publications ---------- */
-.pub-toolbar {
-  display: flex; flex-wrap: wrap; gap: var(--sp-3);
+/* Buttons on the left, counts pushed to the right of the same row. */
+.pub-actions {
+  display: flex; flex-wrap: wrap; gap: var(--sp-4) var(--sp-5);
   align-items: center; justify-content: space-between;
-  padding-block: var(--sp-5); border-bottom: 1px solid var(--rule-soft);
+  margin-top: var(--sp-5);
 }
+.pub-counts { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); }
 .pub-count { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-3); }
+
+@media (max-width: 40rem) {
+  /* stacked on narrow screens, counts left-aligned under the buttons */
+  .pub-actions { justify-content: flex-start; }
+}
 
 .pub-year {
   font-family: var(--font-mono); font-size: var(--step--1);

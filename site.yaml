@@ -9,6 +9,7 @@ location: "Germany"
 description: ""
 
 orcid: 0000-0002-6268-3527
+scholar: 5Ppo7twAAAAJ
 
 links:
   - name: Email
@@ -20,9 +21,9 @@ links:
 
 nav:
   - { title: About,        slug: about,        file: about.md }
-#  - { title: Research,     slug: research,     file: research.md }
-  - { title: Publications, slug: publications, template: publications.html }
+  - { title: Research,     slug: research,     file: research.md }
   - { title: Teaching,     slug: teaching,     file: teaching.md, template: teaching.html }
+  - { title: Publications, slug: publications, template: publications.html }
 #  - { title: Blog,         slug: blog,         template: blog.html }
-#  - { title: Personal,     slug: personal,     file: personal.md }
+  - { title: Personal,     slug: personal,     file: personal.md }
   - { title: CV,           slug: cv,           template: cv.html }
