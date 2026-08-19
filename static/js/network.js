@@ -15,8 +15,8 @@
     linkDist: 215,       // link nodes closer than this
     linkOpacity: 0.6,    // opacity of a zero-length link
     lineWidth: 1,
-    speed: 0.20,         // base drift of the plain mesh, px per frame
-    pageSpeed: 0.44,     // page nodes drift at this fraction of it
+    speed: 0.5,         // base drift of the plain mesh, px per frame
+    pageSpeed: 0.5,     // page nodes drift at this fraction of it
 
     // Circular well for the page nodes only. Radius is half the canvas height
     // times this factor, so it spans the screen vertically.
