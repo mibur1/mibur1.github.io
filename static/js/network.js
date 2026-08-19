@@ -15,23 +15,19 @@
     linkDist: 215,       // link nodes closer than this
     linkOpacity: 0.6,    // opacity of a zero-length link
     lineWidth: 1,
-    speed: 0.5,         // base drift of the plain mesh, px per frame
-    pageSpeed: 0.5,     // page nodes drift at this fraction of it
 
-    // Circular well for the page nodes only. Radius is half the canvas height
-    // times this factor, so it spans the screen vertically.
-    circleScale: 1.0,
-    centerPull: 0.02,    // fraction of the overshoot a page home recovers per frame
+    speed: 0.010,        // canvas heights/seconds; .025 => crosses canvas height in ~40s.
+    pageSpeed: 0.44,     // page nodes drift at this fraction of it
+    circleScale: 1.0,    // Circular well for the page nodes
+    centerPull: 1.2,     // per second: exponential recovery rate toward the circle
     pageHome: 0.55,      // page nodes seed within this fraction of the radius
 
-    // Return easing. Fraction of the remaining gap closed per frame. No spring,
-    // no velocity, so overshoot is impossible by construction. Lower = slower.
-    returnRate: 0.045,
+    returnRate: 2.8,     // Return easing, per second
     maxDisplace: 280,    // a node can never be pushed further than this from home
 
     opacityMin: 0.25,
     opacityMax: 0.75,
-    twinkle: 0.0022,
+    twinkle: 0.13,       // opacity units per second
     grabDist: 190,       // cursor reach for the hover "grab" lines
     grabOpacity: 0.5,
     labelSize: 14,
@@ -39,7 +35,7 @@
     dragSlop: 4,         // movement under this many px counts as a click
 
     pushRange: 900,      // a held node repels everything within this radius
-    pushForce: 3.2,      // push in px/frame at zero distance, falling off with d²
+    pushForce: 190,      // push in px/SECOND at zero distance, falling off with d²
     plainPushScale: 2    // dragging a plain node pushes this much harder than a page node
   };
 
@@ -142,7 +138,9 @@
 
   function baseDrift() {
     var a = Math.random() * Math.PI * 2;
-    var sp = CFG.speed * (0.35 + Math.random() * 0.9);
+    // px per second, derived from the canvas height so the motion reads the
+    // same regardless of resolution or how large the viewport is.
+    var sp = CFG.speed * H * (0.35 + Math.random() * 0.9);
     return { x: Math.cos(a) * sp, y: Math.sin(a) * sp };
   }
 
@@ -202,7 +200,7 @@
     }
   }
 
-  function step() {
+  function step(dt) {
     var w = well();
 
     // A held node repels its neighbourhood. This is a direct displacement in
@@ -226,8 +224,8 @@
         }
         var f = 1 - rd / CFG.pushRange;
         f = f * f * force;             // squared falloff: close nodes feel it most
-        rn.x += (rdx / rd) * f;
-        rn.y += (rdy / rd) * f;
+        rn.x += (rdx / rd) * f * dt;
+        rn.y += (rdy / rd) * f * dt;
       }
     }
 
@@ -242,15 +240,15 @@
       }
 
       // --- the home drifts ---
-      n.hx += n.v0x;
-      n.hy += n.v0y;
+      n.hx += n.v0x * dt;
+      n.hy += n.v0y * dt;
 
       if (n.page) {
         // Page node homes ease back inside the circle when they stray outside.
         var dx = n.hx - w.cx, dy = n.hy - w.cy;
         var d = Math.hypot(dx, dy);
         if (d > w.r && d > 0) {
-          var pull = (d - w.r) * CFG.centerPull;
+          var pull = (d - w.r) * (1 - Math.exp(-CFG.centerPull * dt));
           n.hx -= (dx / d) * pull;
           n.hy -= (dy / d) * pull;
         }
@@ -276,17 +274,18 @@
       }
 
       // --- ease straight back home ---
-      // Closing a fixed fraction of the remaining gap each frame: monotone,
+      // Closing a fixed fraction of the remaining gap per second: monotone,
       // decelerating, and it can never travel past the target.
-      n.x += (n.hx - n.x) * CFG.returnRate;
-      n.y += (n.hy - n.y) * CFG.returnRate;
+      var ease = 1 - Math.exp(-CFG.returnRate * dt);
+      n.x += (n.hx - n.x) * ease;
+      n.y += (n.hy - n.y) * ease;
 
       if (n.page) {
         clampToCanvas(n);
         continue;                      // page nodes stay at full opacity
       }
 
-      n.o += CFG.twinkle * n.dir;
+      n.o += CFG.twinkle * n.dir * dt;
       if (n.o <= CFG.opacityMin) { n.o = CFG.opacityMin; n.dir = 1; }
       else if (n.o >= CFG.opacityMax) { n.o = CFG.opacityMax; n.dir = -1; }
     }
@@ -451,8 +450,13 @@
     ctx.globalAlpha = 1;
   }
 
-  function frame() {
-    step();
+  var lastT = 0;
+  function frame(now) {
+    // Clamp dt so a backgrounded tab or a dropped frame cannot teleport the
+    // field on the next tick.
+    var dt = lastT ? Math.min((now - lastT) / 1000, 0.05) : 1 / 60;
+    lastT = now;
+    step(dt);
     draw();
     raf = requestAnimationFrame(frame);
   }
@@ -465,6 +469,7 @@
     rebuildStyles();
     hovered = null;
     drag = null;
+    lastT = 0;
     if (reduced.matches) { draw(); return; }
     raf = requestAnimationFrame(frame);
   }
@@ -473,7 +478,7 @@
     new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) {
-          if (raf === null && !reduced.matches) raf = requestAnimationFrame(frame);
+          if (raf === null && !reduced.matches) { lastT = 0; raf = requestAnimationFrame(frame); }
         } else if (raf !== null) {
           cancelAnimationFrame(raf);
           raf = null;

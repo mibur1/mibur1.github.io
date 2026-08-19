@@ -43,6 +43,10 @@ jobs:
         run: python scripts/fetch_publications.py
 
       - name: Commit refreshed publications
+        # Best-effort. If the push races another commit, the build still has the
+        # fresh JSON locally and publishes correctly; only the cache commit is
+        # skipped. Never fail the deploy over bookkeeping.
+        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -51,7 +55,8 @@ jobs:
             echo "No publication changes."
           else
             git commit -m "chore: refresh publications from ORCID [skip ci]"
-            git push
+            git pull --rebase --autostash origin main || true
+            git push || echo "Push skipped (remote moved); build continues with fresh data."
           fi
 
       - name: Build
