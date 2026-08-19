@@ -1,0 +1,111 @@
+/* =============================================================
+   Micha Burkhardt — design tokens
+   The entire look of the site is defined in this one file.
+   Change values here; never edit colours or type in templates.
+   ============================================================= */
+
+/* ---------- Fonts (self-hosted, WOFF2, SIL OFL) ---------- */
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/ibm-plex-sans-latin-400-italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+/* ---------- Tokens: light (default) ---------- */
+:root {
+  /* Type families — one sans for everything, mono for metadata */
+  --font-display: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body:    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type scale — fluid, clamps between mobile and desktop */
+  --step--1: clamp(0.83rem, 0.80rem + 0.15vw, 0.91rem);
+  --step-0:  clamp(1.00rem, 0.96rem + 0.20vw, 1.10rem);
+  --step-1:  clamp(1.25rem, 1.18rem + 0.35vw, 1.45rem);
+  --step-2:  clamp(1.55rem, 1.42rem + 0.65vw, 1.95rem);
+  --step-3:  clamp(1.95rem, 1.70rem + 1.25vw, 2.70rem);
+  --step-4:  clamp(2.40rem, 1.95rem + 2.25vw, 3.90rem);
+
+  --leading-tight: 1.18;
+  --leading-body:  1.65;
+
+  /* Colour — ink on paper, never pure black/white */
+  --paper:      #fbfaf7;
+  --paper-2:    #f3f1eb;
+  --ink:        #17171a;
+  --ink-2:      #4a4a52;
+  --ink-3:      #7c7c86;
+  --rule:       rgba(23, 23, 26, 0.12);
+  --rule-soft:  rgba(23, 23, 26, 0.06);
+
+  /* One accent, used sparingly. 6.2:1 on --paper. */
+  --accent:      #0e6a5e;
+  --accent-2:    #0a5049;
+  --accent-wash: rgba(14, 106, 94, 0.09);
+
+  /* Network background */
+  --graph-node: #17171a;
+  --graph-line: 23, 23, 26;   /* rgb triplet — network.js builds rgba() from it */
+  --graph-hot:  #0e6a5e;
+
+  /* Layout */
+  --measure:     66ch;
+  --width-page:  72rem;
+  --width-text:  42rem;
+
+  /* Spacing scale */
+  --sp-1: 0.25rem; --sp-2: 0.5rem;  --sp-3: 0.75rem; --sp-4: 1rem;
+  --sp-5: 1.5rem;  --sp-6: 2rem;    --sp-7: 3rem;    --sp-8: 4.5rem;
+  --sp-9: 7rem;
+
+  /* Paper-grain overlay strength. 0 disables it. */
+  --grain-opacity: 0.3;
+
+  --radius: 2px;
+  --transition: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Tokens: dark ----------
+   Applied only when the toggle sets data-theme="dark". The OS preference is
+   deliberately NOT honoured: the site defaults to light for every visitor.
+   The accent lightens here — #0e6a5e is unreadable on a dark ground. */
+:root[data-theme="dark"] {
+  --paper:      #101012;
+  --paper-2:    #191920;
+  --ink:        #ecebe6;
+  --ink-2:      #b3b2ad;
+  --ink-3:      #83828c;
+  --rule:       rgba(236, 235, 230, 0.14);
+  --rule-soft:  rgba(236, 235, 230, 0.07);
+
+  /* 6.6:1 on --paper */
+  --accent:      #3aa899;
+  --accent-2:    #55c4b4;
+  --accent-wash: rgba(58, 168, 153, 0.14);
+
+  --graph-node: #ecebe6;
+  --graph-line: 236, 235, 230;
+  --graph-hot:  #3aa899;
+
+  --grain-opacity: 0.3;
+}

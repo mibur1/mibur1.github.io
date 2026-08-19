@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="page-head__title">Curriculum Vitae</h1>
+    <div class="cv-actions">
+      <a class="btn" href="/cv.pdf" download>Download PDF</a>
+      <a class="btn btn--ghost" href="/cv.pdf">Open PDF in browser</a>
+    </div>
+  </header>
+  <article class="prose">
+    {{ page.html|safe }}
+  </article>
+</div>
+{% endblock %}

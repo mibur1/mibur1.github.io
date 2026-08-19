@@ -1,0 +1,33 @@
+# =============================================================
+# Manual curation for the publications list.
+#
+# The fetcher NEVER writes to this file. Everything here is applied
+# on top of content/publications.json at build time, keyed by DOI,
+# so `python scripts/fetch_publications.py` can run as often as you
+# like without losing your edits.
+#
+# Supported keys per DOI:
+#   hide: true                 — drop the entry entirely
+#   superseded_by: <doi>       — fold this entry into another one, where it
+#                                becomes a "Preprint" link instead of a
+#                                separate publication
+#   title / venue / year       — override wrong or ugly metadata
+#   code_url: <url>            — add a repository link
+#   note: <text>               — free text, not yet rendered
+#   pin: <int>                 — force sort order within a year (lower first)
+# =============================================================
+
+# The bioRxiv preprint and the Imaging Neuroscience paper are the same work.
+# Folding the preprint into the journal version rather than listing both.
+"10.1101/2024.01.21.576546":
+  superseded_by: "10.1162/imag.a.1122"
+
+"10.1162/imag.a.1122":
+  code_url: https://github.com/mibur1/dfc-multiverse
+
+# --- examples, inactive ------------------------------------------------
+# "10.1016/j.neunet.2023.08.034":
+#   note: PLACEHOLDER — add a plain-language summary here if you want one.
+#
+# "10.1089/brain.2020.1005":
+#   hide: true

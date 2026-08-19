@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ site.name }}{% endblock %}
+
+{% block content %}
+{# Page nodes are driven by the same nav list as the header, so adding a page
+   to site.yaml adds a node to the network automatically. #}
+{%- set nodes = [] -%}
+{%- for item in site.nav -%}
+{%- set _ = nodes.append({'title': item.title, 'url': '/' ~ item.slug ~ '/'}) -%}
+{%- endfor -%}
+<section class="banner">
+  <canvas id="network" aria-hidden="true" data-pages='{{ nodes|tojson }}'></canvas>
+  {# The page still needs a heading for screen readers and search engines,
+     even though nothing is drawn over the network. #}
+  <h1 class="visually-hidden">{{ site.name }}</h1>
+  {% if site.tagline %}
+  <div class="banner__inner">
+    <p class="banner__tagline">{{ site.tagline }}</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/network.js" defer></script>
+{% endblock %}

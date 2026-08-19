@@ -1,0 +1,28 @@
+name: Micha Burkhardt
+url: https://michaburkhardt.de
+lang: en
+
+tagline: "work in progress, will be extended soon"
+role: "PhD Student, Psychological Methods and Statistics"
+affiliation: "Carl von Ossietzky Universität Oldenburg"
+location: "Germany"
+description: ""
+
+orcid: 0000-0002-6268-3527
+
+links:
+  - name: Email
+    url: "mailto:micha.burkhardt@uni-oldenburg.de"
+  - name: ORCID
+    url: https://orcid.org/0000-0002-6268-3527
+  - name: GitHub
+    url: https://github.com/mibur1
+
+nav:
+  - { title: About,        slug: about,        file: about.md }
+  - { title: Research,     slug: research,     file: research.md }
+  - { title: Publications, slug: publications, template: publications.html }
+  - { title: Teaching,     slug: teaching,     file: teaching.md, template: teaching.html }
+  - { title: Blog,         slug: blog,         template: blog.html }
+  - { title: Personal,     slug: personal,     file: personal.md }
+  - { title: CV,           slug: cv,           template: cv.html }

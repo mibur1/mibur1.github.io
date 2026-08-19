@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ page.title }} — {{ site.name }}{% endblock %}</title>
+{% set desc = page.description or site.description %}
+{% if desc %}<meta name="description" content="{{ desc }}">{% endif %}
+<link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+<meta property="og:type" content="{{ page.og_type or 'website' }}">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:locale" content="{{ site.lang }}">
+<meta property="og:title" content="{{ page.title }} — {{ site.name }}">
+{% if desc %}<meta property="og:description" content="{{ desc }}">{% endif %}
+<meta property="og:url" content="{{ site.url }}{{ page.url }}">
+<meta property="og:image" content="{{ site.url }}/static/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+{% set sameas = [] %}
+{% for l in site.links %}{% if l.url.startswith('http') %}{% set _ = sameas.append(l.url) %}{% endif %}{% endfor %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": {{ site.name|tojson }},
+  "url": {{ site.url|tojson }}{% if site.role %},
+  "jobTitle": {{ site.role|tojson }}{% endif %}{% if site.affiliation %},
+  "affiliation": { "@type": "Organization", "name": {{ site.affiliation|tojson }} }{% endif %}{% if site.description %},
+  "description": {{ site.description|tojson }}{% endif %},
+  "identifier": "https://orcid.org/{{ site.orcid }}",
+  "sameAs": {{ sameas|tojson }}
+}
+</script>
+
+<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="{{ site.name }} — Blog" href="/blog/feed.xml">
+
+<link rel="preload" href="/static/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+// Runs before paint: applies a previously chosen theme with no flash.
+// No stored choice means light — the OS preference is intentionally ignored.
+(function () {
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+<link rel="stylesheet" href="/static/css/tokens.css">
+<link rel="stylesheet" href="/static/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="wordmark" href="/">{{ site.name }}</a>
+    <div class="site-header__right">
+      <nav class="nav" id="nav" aria-label="Main">
+        {% for item in site.nav %}
+        <a href="/{{ item.slug }}/"{% if item.slug == page.slug %} aria-current="page"{% endif %}>{{ item.title }}</a>
+        {% endfor %}
+      </nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+        <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4.2"/>
+          <g stroke-linecap="round">
+            <path d="M12 2.4v2.6M12 19v2.6M4.4 12H1.8M22.2 12h-2.6M6.3 6.3 4.5 4.5M19.5 19.5l-1.8-1.8M17.7 6.3l1.8-1.8M4.5 19.5l1.8-1.8"/>
+          </g>
+        </svg>
+        <svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+
+
+<script>
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (toggle) {
+    var sync = function (theme) {
+      toggle.setAttribute('aria-label',
+        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    };
+    sync(document.documentElement.getAttribute('data-theme') || 'light');
+
+    toggle.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync(next);
+      // network.js re-reads its colours from the tokens on this event
+      window.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+    });
+  }
+})();
+
+(function () {
+  var btn = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('nav');
+  if (!btn || !nav) return;
+  btn.addEventListener('click', function () {
+    var open = nav.getAttribute('data-open') === 'true';
+    nav.setAttribute('data-open', String(!open));
+    btn.setAttribute('aria-expanded', String(!open));
+  });
+})();
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

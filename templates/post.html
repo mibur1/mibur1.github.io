@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} — {{ site.name }}{% endblock %}
+
+{% block content %}
+<div class="wrap wrap--text">
+  <header class="page-head">
+    <p class="page-head__kicker"><a href="/blog/">Blog</a> · <time datetime="{{ page.date_iso }}">{{ page.date_display }}</time></p>
+    <h1 class="page-head__title">{{ page.title }}</h1>
+    {% if page.sub %}<p class="page-head__sub">{{ page.sub }}</p>{% endif %}
+  </header>
+  <article class="prose">
+    {{ page.html|safe }}
+  </article>
+  <p class="prose"><a href="/blog/">← All posts</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="page-head__title">{{ page.heading or page.title }}</h1>
+    {% if page.sub %}<p class="page-head__sub">{{ page.sub }}</p>{% endif %}
+  </header>
+  <article class="prose">
+    {{ page.html|safe }}
+  </article>
+</div>
+{% endblock %}

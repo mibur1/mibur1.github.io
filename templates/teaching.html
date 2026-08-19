@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="page-head__title">{{ page.heading or page.title }}</h1>
+    {% if page.sub %}<p class="page-head__sub">{{ page.sub }}</p>{% endif %}
+  </header>
+
+  {% if page.courses %}
+  <div class="cards">
+    {% for c in page.courses %}
+    <a class="card" href="{{ c.url }}" style="--c: {{ c.color }}; --c-dark: {{ c.color_dark }}">
+      <p class="card__code">{{ c.code }}</p>
+      <h2 class="card__title">{{ c.title }}</h2>
+      <p class="card__meta">{{ c.programme }}</p>
+      <p class="card__body">{{ c.body }}</p>
+      <span class="card__go">Course book</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if page.html.strip() %}
+  <article class="prose">
+    {{ page.html|safe }}
+  </article>
+  {% endif %}
+</div>
+{% endblock %}

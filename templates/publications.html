@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="page-head__title">Publications</h1>
+    <div class="cv-actions">
+      <a class="btn btn--ghost" href="/publications.bib">Download BibTeX</a>
+      <a class="btn btn--ghost" href="https://orcid.org/{{ site.orcid }}">View on ORCID</a>
+    </div>
+  </header>
+
+  <div class="pub-toolbar">
+    <span class="pub-count">{{ publications|length }} publication{{ '' if publications|length == 1 else 's' }}</span>
+    <span class="pub-count">{{ total_citations }} citation{{ '' if total_citations == 1 else 's' }} (OpenAlex)</span>
+  </div>
+
+  {% for year, items in publications_by_year %}
+  <h2 class="pub-year">{{ year }}</h2>
+  <ul class="pub-list">
+    {% for pub in items %}
+    <li class="pub">
+      <h3 class="pub__title">
+        {% if pub.url %}<a href="{{ pub.url }}">{{ pub.title }}</a>{% else %}{{ pub.title }}{% endif %}
+      </h3>
+      {% if pub.authors %}
+      <p class="pub__authors">
+        {%- for a in pub.authors -%}
+          {%- if a.is_me -%}<span class="me">{{ a.name }}</span>{%- else -%}{{ a.name }}{%- endif -%}
+          {%- if not loop.last %}, {% endif -%}
+        {%- endfor -%}
+      </p>
+      {% endif %}
+      {% if pub.venue %}<p class="pub__venue">{{ pub.venue }}{% if pub.year %} ({{ pub.year }}){% endif %}</p>{% endif %}
+      <div class="pub__links">
+        {% if pub.doi %}<a class="tag" href="https://doi.org/{{ pub.doi }}">DOI</a>{% endif %}
+        {% if pub.oa_url %}<a class="tag tag--oa" href="{{ pub.oa_url }}">PDF · Open access</a>{% endif %}
+        {% if pub.preprint_doi %}<a class="tag" href="https://doi.org/{{ pub.preprint_doi }}">Preprint</a>{% endif %}
+        {% if pub.code_url %}<a class="tag" href="{{ pub.code_url }}">Code</a>{% endif %}
+        {% if pub.citations %}<span class="tag tag--plain">{{ pub.citations }} citations</span>{% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+
+</div>
+{% endblock %}

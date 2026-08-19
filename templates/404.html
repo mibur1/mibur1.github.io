@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Page not found — {{ site.name }}{% endblock %}
+
+{% block content %}
+<div class="wrap notfound">
+  <p class="notfound__code">404</p>
+  <h1 class="page-head__title" style="max-width:none">This page doesn't exist</h1>
+  <p class="page-head__sub" style="margin-inline:auto">
+    The link may be out of date, or the page may have moved.
+    Try the <a href="/">homepage</a> or one of the sections in the menu above.
+  </p>
+</div>
+{% endblock %}
