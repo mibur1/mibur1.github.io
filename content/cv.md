@@ -4,11 +4,11 @@ description: Curriculum vitae of Micha Burkhardt — PhD student in Psychologica
 
 ## Positions
 
-| Years          | Position                                                                                                |
-| ---------------| ------------------------------------------------------------------------------------------------------- |
-| 2023 – present | **PhD Candidate**, Psychological Methods and Statistics Lab<br>Carl von Ossietzky Universität Oldenburg |
-| 2021 – 2023    | **Research Assistant**, Biological Psychology Lab<br>Carl von Ossietzky Universität Oldenburg           |
-| 2020 – 2023    | **Research Assistant**, Artificial Intelligence Lab<br>Chemnitz University of Technology                |
+| Years          | Position                                                                                                 |
+| ---------------| -------------------------------------------------------------------------------------------------------- |
+| 2023 -- present | **PhD Candidate**, Psychological Methods and Statistics Lab<br>Carl von Ossietzky Universität Oldenburg |
+| 2021 -- 2023    | **Research Assistant**, Biological Psychology Lab<br>Carl von Ossietzky Universität Oldenburg           |
+| 2020 -- 2023    | **Research Assistant**, Artificial Intelligence Lab<br>Chemnitz University of Technology                |
 
 
 ## Education

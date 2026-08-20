@@ -349,6 +349,12 @@ def build_cv_pdf(env, site: dict, ctx: dict) -> None:
     html = env.get_template("cv_pdf.html").render(
         page=page, fonts=(STATIC / "fonts").as_uri(), **ctx
     )
+
+    # A PDF has no base URL, so root-relative hrefs like /teaching/ resolve
+    # against the filesystem and end up as dead file:// links. Rewrite them to
+    # absolute site URLs so they work wherever the PDF is opened.
+    base = site["url"].rstrip("/")
+    html = re.sub(r'href="/(?!/)', f'href="{base}/', html)
     try:
         HTML(string=html, base_url=str(ROOT)).write_pdf(OUT / "cv.pdf")
     except Exception as exc:  # noqa: BLE001
