@@ -13,7 +13,9 @@ scholar: 5Ppo7twAAAAJ
 
 links:
   - name: Email
-    url: "mailto:micha.burkhardt@uni-oldenburg.de"
+    url: "mailto:micha.burkhardt@uol.de"
+  - name: Website
+    url: https://michaburkhardt.de
   - name: ORCID
     url: https://orcid.org/0000-0002-6268-3527
   - name: GitHub
