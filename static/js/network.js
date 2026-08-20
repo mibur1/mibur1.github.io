@@ -16,7 +16,7 @@
     linkOpacity: 0.6,    // opacity of a zero-length link
     lineWidth: 1,
 
-    speed: 0.008,        // canvas heights/seconds; .01 => crosses canvas height in 100s.
+    speed: 0.013,        // canvas heights/seconds; .01 => crosses canvas height in 100s.
     pageSpeed: 0.44,     // page nodes drift at this fraction of it
     circleScale: 1.0,    // Circular well for the page nodes
     centerPull: 1.2,     // per second: exponential recovery rate toward the circle
@@ -34,8 +34,8 @@
     hitPad: 10,          // extra px around a node that still counts as a hit
     dragSlop: 4,         // movement under this many px counts as a click
 
-    pushRange: 900,      // a held node repels everything within this radius
-    pushForce: 190,      // push in px/SECOND at zero distance, falling off with d²
+    pushRange: 1200,     // a held node repels everything within this radius
+    pushForce: 250,      // push in px/SECOND at zero distance, falling off with d²
     plainPushScale: 2    // dragging a plain node pushes this much harder than a page node
   };
 

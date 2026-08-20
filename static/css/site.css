@@ -280,6 +280,30 @@ a:hover { color: var(--accent); }
 }
 .page-head__sub { color: var(--ink-2); margin: var(--sp-4) 0 0; max-width: var(--measure); }
 
+/* ---------- Page with a portrait column ----------
+   Uses the empty space to the right of the 66ch measure. Collapses to a single
+   column on narrow screens, with the photo above the text. */
+.with-aside {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15rem;
+  gap: var(--sp-7);
+  align-items: start;
+}
+.page-aside { padding-top: var(--sp-6); }
+.portrait {
+  width: 100%; height: auto; display: block;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule-soft);
+}
+.portrait__caption {
+  font-size: var(--step--1); color: var(--ink-3);
+  margin: var(--sp-3) 0 0;
+}
+@media (max-width: 56rem) {
+  .with-aside { grid-template-columns: 1fr; gap: var(--sp-5); }
+  .page-aside { order: -1; max-width: 13rem; padding-top: var(--sp-5); }
+}
+
 /* ---------- Prose ---------- */
 .prose { padding-block: var(--sp-6) var(--sp-8); max-width: var(--measure); }
 

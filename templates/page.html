@@ -6,8 +6,23 @@
     <h1 class="page-head__title">{{ page.heading or page.title }}</h1>
     {% if page.sub %}<p class="page-head__sub">{{ page.sub }}</p>{% endif %}
   </header>
+  {% if page.portrait %}
+  <div class="with-aside">
+    <article class="prose">
+      {{ page.html|safe }}
+    </article>
+    <aside class="page-aside">
+      <img class="portrait" src="{{ page.portrait }}"
+           alt="{{ page.portrait_alt or (site.name ~ ', portrait') }}">
+      {% if page.portrait_caption %}
+      <p class="portrait__caption">{{ page.portrait_caption }}</p>
+      {% endif %}
+    </aside>
+  </div>
+  {% else %}
   <article class="prose">
     {{ page.html|safe }}
   </article>
+  {% endif %}
 </div>
 {% endblock %}
