@@ -349,6 +349,16 @@ a:hover { color: var(--accent); }
 .prose th, .prose td { text-align: left; padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--rule-soft); }
 .prose th { font-weight: 600; }
 
+/* CV tables: the first column is a "when" column on every table, so fix it to
+   one width across all of them instead of letting each table auto-size to its
+   own content. Mirrors templates/cv_pdf.html so page and PDF agree. */
+.prose--cv table { table-layout: fixed; }
+.prose--cv td:first-child,
+.prose--cv th:first-child { width: 9rem; padding-left: 0; }
+/* .cv-wide is deliberately NOT honoured here: on the web every CV table keeps
+   the same first-column width. The exemption applies only in the PDF, where
+   the narrower page makes a shrink-to-fit column worth having. */
+
 
 /* ---------- Publications ---------- */
 /* Buttons on the left, counts pushed to the right of the same row. */
