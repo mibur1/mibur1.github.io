@@ -27,5 +27,5 @@ nav:
   - { title: Teaching,     slug: teaching,     file: teaching.md, template: teaching.html }
   - { title: Publications, slug: publications, template: publications.html }
 #  - { title: Blog,         slug: blog,         template: blog.html }
-  - { title: Personal,     slug: personal,     file: personal.md }
+  - { title: Personal,     slug: personal,     file: personal.md, template: personal.html }
   - { title: CV,           slug: cv,           template: cv.html }

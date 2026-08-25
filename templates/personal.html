@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="page-head__title">{{ page.heading or page.title }}</h1>
+    {% if page.sub %}<p class="page-head__sub">{{ page.sub }}</p>{% endif %}
+  </header>
+
+  <article class="prose prose--entries">
+    {{ page.html|safe }}
+  </article>
+
+  {% if page.gallery_images %}
+  <section class="gallery" aria-label="Photos">
+    {% for img in page.gallery_images %}
+    <button class="gallery__item" type="button"
+            data-full="{{ img.full }}" data-index="{{ loop.index0 }}"
+            aria-label="Open photo {{ loop.index }} of {{ page.gallery_images|length }}">
+      <img src="{{ img.thumb }}" alt="" loading="lazy" decoding="async" width="420" height="420">
+    </button>
+    {% endfor %}
+  </section>
+  {% endif %}
+</div>
+
+{% if page.gallery_images %}
+{# The viewer is built by JS on first open; nothing is injected without it, so
+   the page degrades to a plain grid of thumbnails when JS is unavailable. #}
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox__close" type="button" aria-label="Close">&times;</button>
+  <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous photo">&#8249;</button>
+  <figure class="lightbox__stage">
+    <img id="lightbox-img" alt="">
+    <figcaption class="lightbox__count" id="lightbox-count"></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next photo">&#8250;</button>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if page.gallery_images %}<script src="/static/js/lightbox.js" defer></script>{% endif %}
+{% endblock %}

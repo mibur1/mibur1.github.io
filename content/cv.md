@@ -50,12 +50,14 @@ Open-access course materials for all seminars, see [Teaching](/teaching/).
 | 2025  | Examining the Trajectory of Self-Regulation Development via Dynamic Functional Connectivity of Corresponding Brain Networks in Adolescents, **Master's Thesis** |
 
 
-## Talks
+## Talks and Workshops
 
-| Year  | Contribution                                                    |
-| ----- | --------------------------------------------------------------- |
-| 2025  | OHBM Annual Meeting, Brisbane                                   |
-| 2024  | META-REP Conference, Munich                                     |
+| Year  | Contribution                                                                          |
+| ----- | ------------------------------------------------------------------------------------- |
+| 2025  | Workshop on open science -- KD² Graduate School Retreat, Bremen                       |
+| 2025  | Talk on reproducibility in network neuroscience -- OHBM Annual Meeting, Brisbane      |
+| 2025  | Pre-conference workshop on Multiverse Analysis -- PuG 2025, Würzburg                  |
+| 2024  | Talk on the Comet Toolbox -- META-REP Conference, Munich                              |
 
 
 ## Service

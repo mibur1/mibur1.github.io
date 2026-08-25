@@ -136,6 +136,36 @@ def load_publications() -> tuple[list[dict], str]:
     return result, fetched
 
 
+def load_gallery(album: str) -> list[dict]:
+    """Return [{full, thumb}] for static/img/<album>/, natural-sorted.
+
+    Thumbnails come from static/img/<album>/thumbs/ when present (see
+    scripts/make_thumbs.py); otherwise the full image is used for both, so the
+    page still works before thumbnails have been generated.
+    """
+    src = STATIC / "img" / album
+    if not src.is_dir():
+        return []
+
+    exts = {".webp", ".jpg", ".jpeg", ".png"}
+
+    def natural(path: Path):
+        # vacation2 must sort before vacation10
+        return [int(t) if t.isdigit() else t.lower()
+                for t in re.split(r"(\d+)", path.stem)]
+
+    images = []
+    for f in sorted((f for f in src.iterdir()
+                     if f.is_file() and f.suffix.lower() in exts), key=natural):
+        thumb = src / "thumbs" / (f.stem + ".webp")
+        images.append({
+            "full": f"/static/img/{album}/{f.name}",
+            "thumb": f"/static/img/{album}/thumbs/{thumb.name}" if thumb.exists()
+                     else f"/static/img/{album}/{f.name}",
+        })
+    return images
+
+
 def load_posts() -> list[dict]:
     posts = []
     posts_dir = CONTENT / "posts"
@@ -231,6 +261,8 @@ def build(serve: bool = False, port: int = 8000) -> None:
             meta, body = parse_frontmatter(src.read_text(encoding="utf-8"))
             page.update(meta)
             page["html"] = render_md(body)
+            if page.get("gallery"):
+                page["gallery_images"] = load_gallery(page["gallery"])
             template = item.get("template", "page.html")
         else:
             template = item["template"]
@@ -293,9 +325,15 @@ def build(serve: bool = False, port: int = 8000) -> None:
             def log_message(self, *a):  # quieter output
                 pass
 
-        socketserver.TCPServer.allow_reuse_address = True
+        # Threaded: a single-threaded server serialises every request, so a
+        # page with a gallery of images stalls while the browser waits for one
+        # connection at a time.
+        class Server(socketserver.ThreadingTCPServer):
+            allow_reuse_address = True
+            daemon_threads = True
+
         try:
-            httpd = socketserver.TCPServer(("127.0.0.1", port), Handler)
+            httpd = Server(("127.0.0.1", port), Handler)
         except OSError as exc:
             print(f"Cannot bind port {port}: {exc}\nTry: python build.py --serve --port 8787")
             raise SystemExit(1) from exc
