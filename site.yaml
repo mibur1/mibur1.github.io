@@ -23,7 +23,7 @@ links:
 
 nav:
   - { title: About,        slug: about,        file: about.md }
-  - { title: Research,     slug: research,     file: research.md }
+  - { title: Research,     slug: research,     file: research.md, template: research.html }
   - { title: Teaching,     slug: teaching,     file: teaching.md, template: teaching.html }
   - { title: Publications, slug: publications, template: publications.html }
 #  - { title: Blog,         slug: blog,         template: blog.html }

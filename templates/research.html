@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="page-head__title">{{ page.heading or page.title }}</h1>
+    {% if page.sub %}<p class="page-head__sub">{{ page.sub }}</p>{% endif %}
+  </header>
+
+  {% if page.html.strip() %}
+  <article class="prose">{{ page.html|safe }}</article>
+  {% endif %}
+
+  {% if projects %}
+  <div class="cards cards--projects">
+    {% for p in projects %}
+    <a class="card card--project" href="{{ p.url }}"
+       style="--c: {{ p.color or '#0e6a5e' }}; --c-dark: {{ p.color_dark or '#3aa899' }}">
+      {% if p.thumb %}
+      <span class="card__thumb"><img src="{{ p.thumb }}" alt="" loading="lazy" decoding="async"></span>
+      {% endif %}
+      <span class="card__text">
+        <h2 class="card__title">{{ p.title }}</h2>
+        <p class="card__body">{{ p.summary }}</p>
+        <span class="card__go">Read more</span>
+      </span>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

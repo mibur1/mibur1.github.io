@@ -1,0 +1,12 @@
+{# Shared lightbox overlay. Any element with data-full on the page becomes a
+   trigger — see static/js/lightbox.js. Built only when JS runs, so pages
+   degrade to plain images without it. #}
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox__close" type="button" aria-label="Close">&times;</button>
+  <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous image">&#8249;</button>
+  <figure class="lightbox__stage">
+    <img id="lightbox-img" alt="">
+    <figcaption class="lightbox__count" id="lightbox-count"></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next image">&#8250;</button>
+</div>

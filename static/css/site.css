@@ -249,6 +249,41 @@ a:hover { color: var(--accent); }
 }
 .card__go::after { content: " \2192"; }
 
+/* Project cards are horizontal: thumbnail on the left, text on the right, one
+   per row. A vertical list of wide cards scales better than a tile grid when
+   entries have real summaries rather than one-liners. */
+.cards--projects {
+  grid-template-columns: minmax(0, 46rem);
+  justify-content: start;
+}
+.card--project {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: var(--sp-5);
+  align-items: start;
+  border-top-width: 1px;              /* accent moves to the left edge */
+  border-left: 3px solid var(--hue);
+}
+.card__thumb {
+  display: block; margin: 0;
+  aspect-ratio: 1 / 1; overflow: hidden;
+  border-radius: var(--radius);
+}
+.card__thumb img {
+  /* cover + top: at 11rem the whole plot is illegible, so show its most
+     recognisable band — the density curve — rather than shrinking all of it */
+  width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  display: block;
+}
+.card__text { display: flex; flex-direction: column; height: 100%; }
+.card--project .card__body { margin-bottom: var(--sp-4); }
+.card--project .card__go { padding-top: 0; margin-top: auto; }
+
+@media (max-width: 40rem) {
+  .card--project { grid-template-columns: 1fr; }
+  .card__thumb { max-width: 11rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .card:hover { transform: none; }
 }
@@ -306,6 +341,7 @@ a:hover { color: var(--accent); }
 
 /* ---------- Prose ---------- */
 .prose { padding-block: var(--sp-6) var(--sp-8); max-width: var(--measure); }
+.prose--entries:has(> .badges:first-child) { padding-top: var(--sp-4); }
 
 /* Reset the browser's default block margins. Wrapped in :where() so this rule
    carries no specificity — otherwise `.prose p` (0-1-1) outranks the spacing
@@ -373,6 +409,86 @@ a:hover { color: var(--accent); }
   color: var(--ink-3); letter-spacing: 0.06em;
   display: block; margin-top: calc(var(--sp-2) * -1);
 }
+
+/* ---------- Figure with the caption beside it ----------
+   The image keeps the text's 66ch measure so it lines up with the paragraphs,
+   while the figure element itself spans the full page width — the extra space
+   on the right holds the caption instead of sitting empty. Stacks on narrow
+   screens, where there is no spare column. */
+.prose .figure--aside {
+  width: min(var(--width-page), calc(100vw - 2.5rem));
+  max-width: none;
+  margin: var(--sp-6) 0;
+  display: grid;
+  grid-template-columns: minmax(0, var(--measure)) minmax(9rem, 1fr);
+  gap: var(--sp-5);
+  align-items: start;
+}
+.figure--aside img {
+  /* No frame or backing plate: the plot has a transparent background, so it
+     should sit directly on the page and pick up the paper grain. */
+  width: 100%; height: auto; display: block;
+  border-radius: var(--radius);
+}
+/* In dark mode that transparency works against us — the plot is drawn in dark
+   ink, so it would be near-invisible on a dark page. Give it a light plate. */
+:root[data-theme="dark"] .figure--aside img,
+:root[data-theme="dark"] .card__thumb img {
+  background: #f6f4ef;
+  padding: var(--sp-3);
+}
+.figure--aside button {
+  display: block; width: 100%; padding: 0; border: 0;
+  background: none; cursor: zoom-in;
+}
+.figure--aside button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.figure--aside figcaption {
+  font-size: var(--step--1); color: var(--ink-2);
+  margin: 0; max-width: none;
+  /* Nudge down so the caption title reads as level with the top of the image
+     rather than sitting above it — text has no leading above its cap height. */
+  padding-top: var(--sp-3);
+}
+/* A leading <b> in a caption is its title: own line, full ink, space beneath. */
+.figure--aside figcaption > b:first-child,
+.figure--aside figcaption > strong:first-child {
+  display: block;
+  color: var(--ink);
+  margin-bottom: var(--sp-3);
+}
+@media (max-width: 56rem) {
+  .prose .figure--aside { grid-template-columns: 1fr; gap: var(--sp-3); }
+  .figure--aside figcaption { max-width: var(--measure); }
+}
+
+/* ---------- Badges ----------
+   The two-tone shields.io shape, rendered natively: no external request, no
+   raster image, follows the theme, and stays crisp at any zoom. Each badge
+   sets its own hue inline via --c, like the course cards. */
+.badges {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2);
+  margin: var(--sp-5) 0;
+}
+/* A badge row opening an article sits right under the page rule, where the
+   prose padding already supplies the gap — its own top margin is redundant. */
+.prose > .badges:first-child { margin-top: 0; }
+.badge {
+  --hue: var(--c, var(--accent));
+  display: inline-flex; align-items: stretch;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  line-height: 1; text-decoration: none;
+  border-radius: var(--radius); overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.badge__label, .badge__value {
+  display: inline-flex; align-items: center;
+  padding: 0.45em 0.7em; letter-spacing: 0.04em;
+}
+.badge__label { background: var(--ink); color: var(--paper); }
+.badge__value { background: var(--hue); color: #fff; font-weight: 500; }
+.badge:hover { transform: translateY(-1px); box-shadow: 0 3px 10px -5px var(--hue); }
+.badge:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .badge:hover { transform: none; } }
 
 /* ---------- Photo gallery ---------- */
 .gallery {

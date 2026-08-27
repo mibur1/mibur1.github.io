@@ -10,7 +10,9 @@
    ============================================================= */
 (function () {
   var box = document.getElementById('lightbox');
-  var items = Array.prototype.slice.call(document.querySelectorAll('.gallery__item'));
+  // Any element carrying data-full opens in the viewer: gallery tiles,
+  // and single figures embedded in prose.
+  var items = Array.prototype.slice.call(document.querySelectorAll('[data-full]'));
   if (!box || !items.length) return;
 
   var img = document.getElementById('lightbox-img');

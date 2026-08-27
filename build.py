@@ -47,6 +47,17 @@ def render_md(text: str) -> str:
 
 
 def excerpt_from(html: str, limit: int = 200) -> str:
+    """First prose from a rendered body, for cards and feed summaries.
+
+    Badge rows, figures and code blocks are stripped first — their text is
+    labels and captions, which reads as gibberish in a one-line summary
+    (e.g. "paperImaging Neuroscience GitHubmibur1/comet ...").
+    """
+    for pattern in (r"<p class=\"badges\">.*?</p>",
+                    r"<figure\b.*?</figure>",
+                    r"<pre\b.*?</pre>",
+                    r"<h[1-6]\b.*?</h[1-6]>"):
+        html = re.sub(pattern, " ", html, flags=re.S)
     plain = re.sub(r"<[^>]+>", "", html)
     plain = re.sub(r"\s+", " ", plain).strip()
     return plain[:limit].rstrip() + "…" if len(plain) > limit else plain
@@ -166,6 +177,38 @@ def load_gallery(album: str) -> list[dict]:
     return images
 
 
+def load_projects() -> list[dict]:
+    """Research projects: one markdown file each in content/projects/.
+
+    Each becomes its own page at /research/<slug>/ and a card on the Research
+    index, so adding a project is dropping in a file — no template edits.
+    """
+    projects = []
+    d = CONTENT / "projects"
+    if not d.exists():
+        return projects
+
+    for path in sorted(d.glob("*.md")):
+        meta, body = parse_frontmatter(path.read_text(encoding="utf-8"))
+        if meta.get("draft"):
+            continue
+        slug = meta.get("slug") or path.stem
+        html = render_md(body)
+        projects.append({
+            **meta,
+            "slug": slug,
+            "url": f"/research/{slug}/",
+            "html": html,
+            "title": meta.get("title", slug),
+            "summary": meta.get("summary") or meta.get("description") or excerpt_from(html, 180),
+            "og_type": "article",
+        })
+
+    # `order` pins position; otherwise newest-titled last-added first
+    projects.sort(key=lambda p: (p.get("order", 100), p["title"]))
+    return projects
+
+
 def load_posts() -> list[dict]:
     posts = []
     posts_dir = CONTENT / "posts"
@@ -217,6 +260,7 @@ def build(serve: bool = False, port: int = 8000) -> None:
     site = load_site()
     publications, _pubs_fetched = load_publications()
     posts = load_posts()
+    projects = load_projects()
     now = datetime.now(timezone.utc)
 
     env = Environment(
@@ -238,6 +282,7 @@ def build(serve: bool = False, port: int = 8000) -> None:
     ctx = {
         "site": site,
         "posts": posts,
+        "projects": projects,
         "publications": publications,
         "publications_by_year": publications_by_year,
         "total_citations": sum(p.get("citations") or 0 for p in publications),
@@ -274,6 +319,12 @@ def build(serve: bool = False, port: int = 8000) -> None:
 
         write(OUT / slug / "index.html", env.get_template(template).render(page=page, **ctx))
         urls.append({"loc": f"/{slug}/", "lastmod": now.strftime("%Y-%m-%d")})
+
+    # --- research projects ---
+    for proj in projects:
+        write(OUT / "research" / proj["slug"] / "index.html",
+              env.get_template("project.html").render(page=proj, **ctx))
+        urls.append({"loc": proj["url"], "lastmod": now.strftime("%Y-%m-%d")})
 
     # --- blog posts ---
     for post in posts:
