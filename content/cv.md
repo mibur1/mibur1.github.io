@@ -4,9 +4,9 @@ description: Curriculum vitae of Micha Burkhardt — PhD student in Psychologica
 
 ## Positions
 
-| Years          | Position                                                                                                 |
-| ---------------| -------------------------------------------------------------------------------------------------------- |
-| 2023 -- present | **PhD Candidate**, Psychological Methods and Statistics Lab<br>Carl von Ossietzky Universität Oldenburg |
+| Years           | Position                                                                                                |
+| ----------------| ------------------------------------------------------------------------------------------------------- |
+| 2024 -- present | **PhD Candidate**, Psychological Methods and Statistics Lab<br>Carl von Ossietzky Universität Oldenburg |
 | 2021 -- 2023    | **Research Assistant**, Biological Psychology Lab<br>Carl von Ossietzky Universität Oldenburg           |
 | 2020 -- 2023    | **Research Assistant**, Artificial Intelligence Lab<br>Chemnitz University of Technology                |
 
@@ -23,11 +23,13 @@ description: Curriculum vitae of Micha Burkhardt — PhD student in Psychologica
 
 ## Awards and stipends
 
-| Year          | Award                                                                             |
-| --------------| --------------------------------------------------------------------------------- |
-| 2026          | **IGOR Prize for Open and Reproducible Science**, PuG 2026 Conference -- €500     |
-| 2024          | **Student Best Paper Award**, Guardians Conference -- $3,000                      |
-| 2022 -- 2023  | **Deutschlandstipendium**, German Scholarship -- €3,600                           |
+| Year   | Award                                                                             |
+| -------| --------------------------------------------------------------------------------- |
+| 2026   | **DAAD Travel Grant**, OHBM 2026 Annual Meeting -- €934                           |
+| 2026   | **IGOR Prize for Open and Reproducible Science**, PuG 2026 Conference -- €500     |
+| 2024   | **Student Best Paper Award**, Guardians Conference -- $3,000                      |
+| 2024   | **OLTECH Travel Grant**, NetSci 2024 Conference -- €1,000                         |
+| 2023   | **Deutschlandstipendium**, German Scholarship -- €3,600                           |
 
 
 ## Teaching
@@ -67,13 +69,13 @@ Open-access course materials for all seminars, see [Teaching](/teaching/).
 | ongoing   | **Open Science Interest Group** Oldenburg, Core member            |
 |           | **Appointment committee**, professorship (1)                      |
 |           | **Selection committees**, PhD and PostDoc positions (6)           |
-|           | **Peer review** (PLOS ONE)                                        |
+|           | **Peer review** (PLOS One)                                        |
 | 2024      | **Open Science Conference Oldenburg (OOSC)**, Co-organiser        |
 
 
 ## Publications
 
-Full list on the [Publications](/publications/) page and on [Google Scholar](https://scholar.google.com/citations?user=5Ppo7twAAAAJ).
+Please find a full list on the [Publications](/publications/) page and on [Google Scholar](https://scholar.google.com/citations?user=5Ppo7twAAAAJ).
 
 
 ## Software

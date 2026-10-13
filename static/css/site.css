@@ -279,7 +279,6 @@ a:hover { color: var(--accent); }
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3);
   transition: color var(--transition);
 }
-.card__go::after { content: " \2192"; }
 .card:hover .card__go { color: var(--hue); }
 
 /* Project entries are horizontal: thumbnail, then text, one per row. */

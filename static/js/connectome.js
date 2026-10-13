@@ -136,13 +136,7 @@
       return (a.hemi < b.hemi ? -1 : a.hemi > b.hemi ? 1 : 0) ||
              (a.m - b.m) || (a.v - b.v);
     });
-    var counts = {};
-    nodes.forEach(function (n, i) {
-      n.i = i;
-      var k = n.hemi + n.m;
-      counts[k] = (counts[k] || 0) + 1;
-      n.label = n.hemi + ' ' + MODULES[n.m].name + ' ' + counts[k];
-    });
+    nodes.forEach(function (n, i) { n.i = i; });
 
     // Correlation-like values from shared network, hemisphere and distance.
     var N = nodes.length, R = [], i, j;
@@ -408,7 +402,7 @@
         var ly = s < 0 ? Math.min(outlineEdge(near, -1) - clear, hubY - leader)
                        : Math.max(outlineEdge(near, 1) + clear, hubY + leader);
         L.y = s < 0 ? Math.max(y, ly) : Math.min(y, ly);
-        L.box = { x: L.x - L.tw / 2 - CFG.hitPadX, y: y - labelPx / 2 - CFG.hitPadY,
+        L.box = { x: L.x - L.tw / 2 - CFG.hitPadX, y: L.y - labelPx / 2 - CFG.hitPadY,
                   w: L.tw + 2 * CFG.hitPadX, h: labelPx + 2 * CFG.hitPadY };
         labels.push(L);
       });
@@ -538,7 +532,9 @@
       var hot = hovered === n || hoverLabel === L;
       var text = n.page.title.toUpperCase();
 
-      // leader: straight out from the hub, then angled up or down to the label
+      // leader: straight out from the hub, then angled up or down to the label.
+      // It starts at the hub's centre; the ring drawn on top hides that part,
+      // so line and ring always meet without a gap.
       ctx.strokeStyle = hot ? C.accent : C.ink3;
       ctx.lineWidth = CFG.leaderWidth;
       ctx.beginPath();
@@ -546,14 +542,14 @@
       if (L.row) {
         // rows: straight up/down from the hub, then angled to the label
         var end = L.y - s * (labelPx / 2 + 5);
-        ctx.moveTo(q.x, q.y + s * (CFG.hubRadius + 3));
+        ctx.moveTo(q.x, q.y);
         ctx.lineTo(q.x, end - s * CFG.kinkRise);
         ctx.lineTo(L.x, end);
         ctx.stroke();
         ctx.textAlign = 'center';
         tx = L.x;
       } else {
-        ctx.moveTo(q.x + s * (CFG.hubRadius + 3), q.y);
+        ctx.moveTo(q.x, q.y);
         ctx.lineTo(L.x - s * CFG.kinkRun, q.y);
         ctx.lineTo(L.x, L.y);
         ctx.stroke();
@@ -575,17 +571,6 @@
     });
     resetSpacing();
 
-    // name of the hovered region, quietly, next to it
-    if (hovered && !hovered.page) {
-      var hq = Q[hovered.i];
-      ctx.font = '400 ' + labelPx + 'px ' + C.mono;
-      ctx.textAlign = hovered.side < 0 ? 'right' : 'left';
-      ctx.lineWidth = 4; ctx.strokeStyle = C.paper;
-      var hx = hq.x + hovered.side * 10;
-      ctx.strokeText(hovered.label, hx, hq.y - 11);
-      ctx.fillStyle = C.accent;
-      ctx.fillText(hovered.label, hx, hq.y - 11);
-    }
     ctx.textAlign = 'left';
   }
 

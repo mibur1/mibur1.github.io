@@ -1,7 +1,7 @@
 {
   "source": "google-scholar",
   "scholar": "5Ppo7twAAAAJ",
-  "fetched": "2026-08-19",
+  "fetched": "2026-10-13",
   "publications": [
     {
       "title": "Dopamine-related alterations in functional brain network dynamic reconfiguration in Parkinson’s disease",
@@ -45,7 +45,7 @@
       "title": "Multicurious: A Multidisciplinary Guide to Multiverse Analysis",
       "year": 2026,
       "venue": "Advances in Methods and Practices in Psychological Science",
-      "citations": 9,
+      "citations": 11,
       "order": 1,
       "doi": "10.1177/25152459261434881",
       "authors": [
@@ -123,7 +123,7 @@
         }
       ],
       "oa_url": "https://doi.org/10.1177/25152459261434881",
-      "oa_status": "diamond",
+      "oa_status": "gold",
       "type": "article",
       "date": "2026-04-01"
     },
@@ -131,7 +131,7 @@
       "title": "The Comet toolbox: Improving robustness in network neuroscience through multiverse analysis",
       "year": 2026,
       "venue": "Imaging Neuroscience",
-      "citations": 4,
+      "citations": 5,
       "order": 2,
       "doi": "10.1162/imag.a.1122",
       "authors": [
@@ -162,7 +162,7 @@
           "is_me": false
         },
         {
-          "name": "D. Wolke",
+          "name": "Dieter Wolke",
           "is_me": false
         },
         {
@@ -178,7 +178,7 @@
           "is_me": false
         },
         {
-          "name": "Dennis Hedderich",
+          "name": "Dennis Martin Hedderich",
           "is_me": false
         },
         {
@@ -245,7 +245,7 @@
       "title": "A large-scale neurocomputational model of spatial cognition integrating memory with vision",
       "year": 2023,
       "venue": "Neural Networks",
-      "citations": 14,
+      "citations": 15,
       "order": 5,
       "doi": "10.1016/j.neunet.2023.08.034",
       "authors": [
@@ -270,7 +270,7 @@
           "is_me": false
         },
         {
-          "name": "A Schwarz",
+          "name": "Alex Schwarz",
           "is_me": false
         },
         {
