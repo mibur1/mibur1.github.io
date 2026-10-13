@@ -1,8 +1,6 @@
 ---
 heading: Teaching
-sub: >-
-  All my teaching materials are openly accessible Jupyter Books.
-description: Seminars materials
+description: Teaching materials
 
 # Box widgets
 courses:
