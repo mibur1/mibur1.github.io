@@ -155,45 +155,60 @@ a:hover { color: var(--accent); }
   .nav a::after { display: none; }
 }
 
-/* ---------- Banner (homepage) ---------- */
-.banner {
-  position: relative;
-  /* fill the viewport below the sticky header */
-  height: calc(100svh - 4.5rem);
-  min-height: 22rem;
+/* ---------- Hero (homepage) ----------
+   The text column lines up with the header; the connectome column runs on
+   towards the right edge (--width-hero) to leave air between the two. */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+  column-gap: var(--sp-7);
+  align-items: center;
+  min-height: calc(100svh - 4.5rem);
+  padding-left: max(1.25rem, (100% - var(--width-page)) / 2);
+  padding-right: max(1.25rem, (100% - var(--width-hero)) / 2);
   overflow: hidden;
 }
-#network {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%; display: block;
-}
-.banner__inner::before {
-  /* soft halo so the tagline stays legible over the mesh */
-  content: "";
-  position: absolute; left: 50%; top: 50%;
-  width: min(90%, 34rem); aspect-ratio: 3 / 1;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse at center,
-    color-mix(in srgb, var(--paper) 85%, transparent) 0%,
-    color-mix(in srgb, var(--paper) 45%, transparent) 38%,
-    transparent 72%);
-  pointer-events: none;
-}
-.banner__inner > * { position: relative; }
-.banner__inner {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: var(--sp-5);
-  pointer-events: none;
-}
-.banner__tagline {
+.hero__text { padding-block: var(--sp-7); }
+.hero__art { position: relative; height: calc(100svh - 4.5rem); min-height: 30rem; }
+#connectome { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.hero__kicker {
   font-family: var(--font-mono);
-  font-size: var(--step--1);
+  font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0;
+}
+.hero__name {
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  margin: 0.35em 0 0.3em;
+}
+.hero__lede { color: var(--ink-2); max-width: 34ch; margin: 0 0 var(--sp-6); }
+.hero__links {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  margin: 0; padding: 0; list-style: none;
+}
+.hero__links a {
   color: var(--ink-2);
-  margin: var(--sp-5) 0 0;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  transition: color var(--transition), border-color var(--transition);
+}
+.hero__links a:hover { color: var(--accent); border-color: var(--accent); }
+
+/* small screens: the brain above, the text below */
+@media (max-width: 56rem) {
+  .hero { grid-template-columns: 1fr; padding-inline: 1.25rem; }
+  .hero__art { order: -1; height: 52svh; min-height: 20rem; }
+  .hero__text { padding-block: 0 var(--sp-7); }
 }
 
 /* ---------- Course cards ----------

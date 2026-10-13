@@ -23,7 +23,7 @@ python build.py --serve # build and serve at http://localhost:8000
 | `static/css/tokens.css`               | The entire look of the site               |
 | `static/css/site.css`                 | Layout and components                     |
 | `static/fonts/`                       | Self-hosted WOFF2                         |
-| `static/js/network.js`                | Homepage network — behaviour and `CFG`    |
+| `static/js/connectome.js`             | Homepage connectome — behaviour and `CFG` |
 | `static/img/`                         | Favicon, OG card, grain tiles             |
 | `scripts/`                            | One-off generators (see below)            |
 | `build.py`                            | The generator                             |
@@ -47,8 +47,10 @@ python build.py --serve # build and serve at http://localhost:8000
     -Recovers DOIs via Crossref and open-access links via OpenAlex.
     - Run locally and commit the JSON; Scholar blocks CI runners.
 - **Design**: `static/css/tokens.css`.
-- **Homepage network**: tunables live in the `CFG` block at the top of `static/js/network.js`.
-  Which nodes appear is driven by the `nav` list in `site.yaml`, not by the script.
+- **Homepage**: the lede is `intro` in `site.yaml`; `tagline` adds an optional line above the name.
+  The connectome's tunables live in the `CFG` block at the top of `static/js/connectome.js`.
+  Its labelled hubs are driven by the `nav` list in `site.yaml` (one per network, so up to seven).
+  Earlier designs and drafts are kept locally in `backup/` (git-ignored).
 - **Images**: regenerate after changing name or palette — these are committed, not built:
     - `python scripts/make_og_image.py` — the link-preview card
     - `python scripts/make_noise.py` — the paper-grain tiles

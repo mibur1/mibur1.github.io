@@ -48,8 +48,8 @@
   } catch (e) {}
 })();
 </script>
-<link rel="stylesheet" href="/static/css/tokens.css">
-<link rel="stylesheet" href="/static/css/site.css">
+<link rel="stylesheet" href="/static/css/tokens.css?v={{ asset_v }}">
+<link rel="stylesheet" href="/static/css/site.css?v={{ asset_v }}">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -100,7 +100,7 @@
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('theme', next); } catch (e) {}
       sync(next);
-      // network.js re-reads its colours from the tokens on this event
+      // connectome.js re-reads its colours from the tokens on this event
       window.dispatchEvent(new CustomEvent('themechange', { detail: next }));
     });
   }

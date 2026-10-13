@@ -13,6 +13,7 @@ it works without JavaScript and is indexable by search engines and Scholar.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -69,6 +70,15 @@ def write(path: Path, content: str) -> None:
 
 
 # ---------------------------------------------------------------- content
+def asset_version() -> str:
+    """Short hash of the CSS and JS, appended to their URLs as ?v=… so a
+    browser never pairs a new page with a stale cached stylesheet or script."""
+    h = hashlib.sha1()
+    for f in sorted((STATIC / "css").glob("*.css")) + sorted((STATIC / "js").glob("*.js")):
+        h.update(f.read_bytes())
+    return h.hexdigest()[:10]
+
+
 def load_site() -> dict:
     return yaml.safe_load((ROOT / "site.yaml").read_text(encoding="utf-8"))
 
@@ -287,6 +297,7 @@ def build(serve: bool = False, port: int = 8000) -> None:
         "publications_by_year": publications_by_year,
         "total_citations": sum(p.get("citations") or 0 for p in publications),
         "build_rfc822": format_datetime(now),
+        "asset_v": asset_version(),
     }
 
     urls = []

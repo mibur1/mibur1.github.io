@@ -2,7 +2,10 @@ name: Micha Burkhardt
 url: https://michaburkhardt.de
 lang: en
 
-tagline: ""
+tagline: ""   # optional line above the name on the homepage
+intro: >-   # homepage lede
+  PhD student at Carl von Ossietzky Universität Oldenburg. I work on brain
+  networks, individual differences, and making neuroimaging analyses more robust.
 role: "PhD Student, Psychological Methods and Statistics"
 affiliation: "Carl von Ossietzky Universität Oldenburg"
 location: "Germany"

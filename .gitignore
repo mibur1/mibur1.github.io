@@ -6,3 +6,4 @@ venv/
 .DS_Store
 .claude/
 _CONTENT.md
+backup/

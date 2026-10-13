@@ -4,7 +4,7 @@ description: Glimpses into my personal life.
 gallery: vacation
 ---
 
-## The long way home from Bordeaux
+## The way home from Bordeaux
 
 <span class="entry-date">Summer 2026</span>
 

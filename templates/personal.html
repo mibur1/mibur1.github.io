@@ -28,5 +28,5 @@
 {% endblock %}
 
 {% block scripts %}
-{% if page.gallery_images %}<script src="/static/js/lightbox.js" defer></script>{% endif %}
+{% if page.gallery_images %}<script src="/static/js/lightbox.js?v={{ asset_v }}" defer></script>{% endif %}
 {% endblock %}
