@@ -1,10 +1,10 @@
 ---
 title: Multiverse Analysis
-summary: Analysing data is important and fun. Why not do it a thousand times?
+summary: Why run one analysis when you can run all of them?
 color: '#0e6a5e'
 color_dark: '#3aa899'
 thumb: /static/img/multiverse.webp
-description: Analysing data is important and fun. Why not do it a thousand times?
+description: Multiverse analysis runs every defensible version of an analysis, showing how robust a result is and which choices it hinges on.
 ---
 
 <p class="badges">
