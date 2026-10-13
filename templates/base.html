@@ -57,9 +57,9 @@
 
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="wordmark" href="/">{{ site.name }}</a>
     <div class="site-header__right">
       <nav class="nav" id="nav" aria-label="Main">
+        {% if page.url != "/" %}<a href="/">Home</a>{% endif %}
         {% for item in site.nav %}
         <a href="/{{ item.slug }}/"{% if item.slug == page.slug %} aria-current="page"{% endif %}>{{ item.title }}</a>
         {% endfor %}

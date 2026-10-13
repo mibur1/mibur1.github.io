@@ -26,7 +26,9 @@
 
     // drawing
     edgeWidth: 1.3,
-    labelSize: 11.5,     // px, hub labels
+    labelSize: 15,       // px, hub labels
+    hitPadX: 16,         // px of clickable space left/right of a label
+    hitPadY: 14,         // px of clickable space above/below a label
     labelSpacing: 1.4,   // px of letter-spacing on hub labels
     leaderWidth: 1.3,
     hubRadius: 6.5,      // px, the ring around a hub
@@ -324,7 +326,7 @@
                        return { n: n, y: hy + (hy < geo.cy ? -1 : 1) * CFG.kinkRise };
                      })
                      .sort(function (a, b) { return a.y - b.y; });
-      var minGap = CFG.labelSize * 2.4, last = -Infinity;
+      var minGap = CFG.labelSize * 3, last = -Infinity;
       side.forEach(function (L) {
         L.y = Math.max(L.y, last + minGap);
         last = L.y;
@@ -338,7 +340,9 @@
         if (s > 0) lx = Math.min(lx, W - 12 - tw);      // keep the text on canvas
         else lx = Math.max(lx, 12 + tw);
         L.x = lx; L.side = s; L.tw = tw;
-        L.box = { x: s < 0 ? lx - 8 - tw : lx + 8, y: L.y - 10, w: tw, h: 20 };
+        // generous click target: the labels are far apart anyway
+        L.box = { x: (s < 0 ? lx - 8 - tw : lx + 8) - CFG.hitPadX, y: L.y - CFG.labelSize / 2 - CFG.hitPadY,
+                  w: tw + 2 * CFG.hitPadX, h: CFG.labelSize + 2 * CFG.hitPadY };
         labels.push(L);
       });
     });
@@ -552,7 +556,7 @@
   function hit(pt) {
     for (var k = 0; k < labels.length; k++) {
       var b = labels[k].box;
-      if (pt.x >= b.x - 6 && pt.x <= b.x + b.w + 6 && pt.y >= b.y && pt.y <= b.y + b.h) {
+      if (pt.x >= b.x && pt.x <= b.x + b.w && pt.y >= b.y && pt.y <= b.y + b.h) {
         return { label: labels[k], node: labels[k].n };
       }
     }

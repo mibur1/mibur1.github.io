@@ -5,7 +5,13 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html {
+  -webkit-text-size-adjust: 100%; scroll-behavior: smooth;
+  /* reserve the scrollbar's space on every page, so short pages (no
+     scrollbar) and long ones lay out at the same width and nothing jumps
+     when switching tabs */
+  scrollbar-gutter: stable;
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -85,7 +91,7 @@ a:hover { color: var(--accent); }
   border-bottom: 1px solid var(--rule-soft);
 }
 .site-header__inner {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: flex-end;
   gap: var(--sp-5); padding-block: var(--sp-4);
 }
 .wordmark {
@@ -160,8 +166,8 @@ a:hover { color: var(--accent); }
    towards the right edge (--width-hero) to leave air between the two. */
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
-  column-gap: var(--sp-7);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  column-gap: var(--sp-6);
   align-items: center;
   min-height: calc(100svh - 4.5rem);
   padding-left: max(1.25rem, (100% - var(--width-page)) / 2);
@@ -182,13 +188,13 @@ a:hover { color: var(--accent); }
 }
 .hero__name {
   font-family: var(--font-display);
-  font-size: var(--step-4);
+  font-size: var(--step-3);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.02;
   margin: 0.35em 0 0.3em;
 }
-.hero__lede { color: var(--ink-2); max-width: 34ch; margin: 0 0 var(--sp-6); }
+.hero__lede { color: var(--ink-2); font-size: var(--step--1); max-width: 36ch; margin: 0 0 var(--sp-6); }
 .hero__links {
   display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5);
   font-family: var(--font-mono);
@@ -211,41 +217,37 @@ a:hover { color: var(--accent); }
   .hero__text { padding-block: 0 var(--sp-7); }
 }
 
-/* ---------- Course cards ----------
-   Each card carries its own hue via --c (light) and --c-dark (dark),
-   set inline from the course list in content/teaching.md. */
+/* ---------- Course and project entries ----------
+   Not boxes: each entry is text hung off a thin vertical rule in its own hue
+   (--c light, --c-dark dark, set inline from the content). The hue stays on
+   the rule and the small mono lines; on hover the rule thickens and the
+   title takes the hue. */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-  gap: var(--sp-5);
-  padding-block: var(--sp-6) var(--sp-8);
+  gap: var(--sp-7) var(--sp-6);
+  padding-block: var(--sp-7) var(--sp-8);
 }
 .card {
   --hue: var(--c, var(--accent));
   position: relative;
   display: flex; flex-direction: column;
-  padding: var(--sp-5);
-  border: 1px solid var(--rule);
-  border-top: 3px solid var(--hue);
-  border-radius: var(--radius);
-  background: color-mix(in srgb, var(--hue) 5%, var(--paper));
+  padding: var(--sp-1) 0 var(--sp-1) var(--sp-5);
   text-decoration: none; color: inherit;
-  transition: transform var(--transition), box-shadow var(--transition),
-              background var(--transition), border-color var(--transition);
+}
+.card::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--hue); opacity: 0.55;
+  transition: width var(--transition), opacity var(--transition);
 }
 :root[data-theme="dark"] .card { --hue: var(--c-dark, var(--accent)); }
-.card:hover {
-  transform: translateY(-3px);
-  background: color-mix(in srgb, var(--hue) 10%, var(--paper));
-  border-color: color-mix(in srgb, var(--hue) 45%, var(--rule));
-  box-shadow: 0 6px 24px -12px color-mix(in srgb, var(--hue) 60%, transparent);
-}
+.card:hover::before { width: 4px; opacity: 1; }
 .card:hover .card__title { color: var(--hue); }
 .card__code {
   font-family: var(--font-mono); font-size: 0.72rem;
   letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--hue); font-weight: 400;
-  margin: 0 0 var(--sp-3);
+  color: var(--ink-3); font-weight: 400;
+  margin: 0 0 var(--sp-2);
 }
 .card__title {
   font-size: var(--step-1); font-weight: 600; line-height: 1.25;
@@ -254,30 +256,28 @@ a:hover { color: var(--accent); }
 }
 .card__meta {
   font-size: var(--step--1); color: var(--ink-3);
-  margin: 0 0 var(--sp-4);
+  margin: 0 0 var(--sp-3);
 }
 .card__body { font-size: var(--step--1); color: var(--ink-2); margin: 0; }
 .card__go {
   margin-top: auto; padding-top: var(--sp-4);
   font-family: var(--font-mono); font-size: 0.72rem;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--hue);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3);
+  transition: color var(--transition);
 }
 .card__go::after { content: " \2192"; }
+.card:hover .card__go { color: var(--hue); }
 
-/* Project cards are horizontal: thumbnail on the left, text on the right, one
-   per row. A vertical list of wide cards scales better than a tile grid when
-   entries have real summaries rather than one-liners. */
+/* Project entries are horizontal: thumbnail, then text, one per row. */
 .cards--projects {
   grid-template-columns: minmax(0, 46rem);
   justify-content: start;
 }
 .card--project {
   display: grid;
-  grid-template-columns: 11rem minmax(0, 1fr);
+  grid-template-columns: 9rem minmax(0, 1fr);
   gap: var(--sp-5);
   align-items: start;
-  border-top-width: 1px;              /* accent moves to the left edge */
-  border-left: 3px solid var(--hue);
 }
 .card__thumb {
   display: block; margin: 0;
@@ -285,22 +285,18 @@ a:hover { color: var(--accent); }
   border-radius: var(--radius);
 }
 .card__thumb img {
-  /* cover + top: at 11rem the whole plot is illegible, so show its most
+  /* cover + top: at this size the whole plot is illegible, so show its most
      recognisable band — the density curve — rather than shrinking all of it */
   width: 100%; height: 100%; object-fit: cover; object-position: top center;
   display: block;
 }
 .card__text { display: flex; flex-direction: column; height: 100%; }
-.card--project .card__body { margin-bottom: var(--sp-4); }
+.card--project .card__body { margin-bottom: var(--sp-3); }
 .card--project .card__go { padding-top: 0; margin-top: auto; }
 
 @media (max-width: 40rem) {
   .card--project { grid-template-columns: 1fr; }
-  .card__thumb { max-width: 11rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card:hover { transform: none; }
+  .card__thumb { max-width: 9rem; }
 }
 
 /* ---------- Page header ---------- */
@@ -574,8 +570,6 @@ a:hover { color: var(--accent); }
   align-items: center; justify-content: space-between;
   margin-top: var(--sp-5);
 }
-.pub-counts { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); }
-.pub-count { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-3); }
 
 @media (max-width: 40rem) {
   /* stacked on narrow screens, counts left-aligned under the buttons */

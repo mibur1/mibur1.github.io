@@ -10,10 +10,6 @@
         <a class="btn btn--ghost" href="https://orcid.org/{{ site.orcid }}">View on ORCID</a>
         <a class="btn btn--ghost" href="/publications.bib">Download BibTeX</a>
       </div>
-      <div class="pub-counts">
-        <span class="pub-count">{{ publications|length }} publication{{ '' if publications|length == 1 else 's' }}</span>
-        <span class="pub-count">{{ total_citations }} citation{{ '' if total_citations == 1 else 's' }}</span>
-      </div>
     </div>
   </header>
 

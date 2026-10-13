@@ -72,7 +72,7 @@
   --measure:     66ch;
   --width-page:  72rem;
   --width-text:  42rem;
-  --width-hero:  84rem;   /* homepage: the connectome runs wider than the page */
+  --width-hero:  78rem;   /* homepage: the connectome runs wider than the page */
 
   /* Spacing scale */
   --sp-1: 0.25rem; --sp-2: 0.5rem;  --sp-3: 0.75rem; --sp-4: 1rem;
