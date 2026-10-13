@@ -27,6 +27,7 @@
     // drawing
     edgeWidth: 1.3,
     labelSize: 15,       // px, hub labels
+    labelSizeSmall: 12.5, // px, hub labels on small canvases
     hitPadX: 16,         // px of clickable space left/right of a label
     hitPadY: 14,         // px of clickable space above/below a label
     labelSpacing: 1.4,   // px of letter-spacing on hub labels
@@ -246,6 +247,7 @@
 
   var ctx = canvas.getContext('2d');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var labelPx = CFG.labelSize;
   var W = 0, H = 0, C = null, geo = null, P = [], Q = [], labels = [], outline = [];
   var hovered = null, hoverLabel = null;
   var pulses = [], nextPulse = 0.4;
@@ -270,7 +272,7 @@
   }
 
   function setLabelFont() {
-    ctx.font = '400 ' + CFG.labelSize + 'px ' + C.mono;
+    ctx.font = '400 ' + labelPx + 'px ' + C.mono;
     if ('letterSpacing' in ctx) ctx.letterSpacing = CFG.labelSpacing + 'px';
   }
   function resetSpacing() { if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; }
@@ -285,17 +287,20 @@
     canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+    labelPx = W < 640 ? CFG.labelSizeSmall : CFG.labelSize;
     setLabelFont();
     var widest = 0;
     hubs.forEach(function (n) { widest = Math.max(widest, ctx.measureText(n.page.title.toUpperCase()).width); });
     resetSpacing();
 
-    // narrow screens: let labels overlap the outline rather than shrink the brain
-    var narrow = W < 520;
-    var room = narrow ? Math.min(widest + 24, W * 0.13) : widest + 30 + CFG.kinkRun + 16;
+    // narrow, tall canvas: keep the brain large; labels move above/below it.
+    // A short canvas (phone held sideways) keeps the labels at the sides.
+    var narrow = W < 520 && H > W * 0.9;
+    var room = narrow ? Math.min(widest + 24, W * 0.13)
+             : W < 640 ? widest + 46 : widest + 30 + CFG.kinkRun + 16;
     var bh = Math.min(H * 0.78, (W - room * 2) / 0.8);
     var bw = bh * 0.8, gap = bw * 0.05, half = bw / 2 - gap;
-    var cy = H / 2 - H * 0.02;
+    var cy = narrow ? H / 2 : H / 2 - H * 0.02;   // stacked: label rows above and below need equal room
     geo = { cx: W / 2, cy: cy, top: cy - bh / 2, bh: bh, bw: bw, gap: gap, half: half };
 
     P = nodes.map(function (n) {
@@ -326,7 +331,7 @@
                        return { n: n, y: hy + (hy < geo.cy ? -1 : 1) * CFG.kinkRise };
                      })
                      .sort(function (a, b) { return a.y - b.y; });
-      var minGap = CFG.labelSize * 3, last = -Infinity;
+      var minGap = labelPx * 3, last = -Infinity;
       side.forEach(function (L) {
         L.y = Math.max(L.y, last + minGap);
         last = L.y;
@@ -341,8 +346,70 @@
         else lx = Math.max(lx, 12 + tw);
         L.x = lx; L.side = s; L.tw = tw;
         // generous click target: the labels are far apart anyway
-        L.box = { x: (s < 0 ? lx - 8 - tw : lx + 8) - CFG.hitPadX, y: L.y - CFG.labelSize / 2 - CFG.hitPadY,
-                  w: tw + 2 * CFG.hitPadX, h: CFG.labelSize + 2 * CFG.hitPadY };
+        L.box = { x: (s < 0 ? lx - 8 - tw : lx + 8) - CFG.hitPadX, y: L.y - labelPx / 2 - CFG.hitPadY,
+                  w: tw + 2 * CFG.hitPadX, h: labelPx + 2 * CFG.hitPadY };
+        labels.push(L);
+      });
+    });
+
+    // If any label would reach into the brain, the margins are too narrow:
+    // put the labels in a row above and a row below the brain instead.
+    var outer = bw / 2 + 10;
+    var collides = labels.some(function (L) {
+      return L.side > 0 ? L.x + 8 < geo.cx + outer : L.x - 8 > geo.cx - outer;
+    });
+    if (collides) layoutRows();
+  }
+
+  // Topmost (side -1) or bottommost (side 1) y of the outline at horizontal
+  // distance dx from the midline; beyond the brain's width there is none.
+  function outlineEdge(dx, side) {
+    var best = side < 0 ? Infinity : -Infinity;
+    for (var k = 0; k <= 80; k++) {
+      var v = k / 80;
+      var ext = geo.gap * 0.45 + halfWidth(v) * geo.half * 1.03 + 8 * Math.sin(Math.PI * v);
+      if (ext < dx) continue;
+      var y = geo.top - 8 + v * (geo.bh + 16);
+      best = side < 0 ? Math.min(best, y) : Math.max(best, y);
+    }
+    return best;
+  }
+
+  // Labels in two rows: the upper hubs above the brain, the lower ones below,
+  // each label centred over its hub, then pushed apart and kept on canvas.
+  function layoutRows() {
+    labels = [];
+    var byY = hubs.slice().sort(function (a, b) { return P[a.i].y - P[b.i].y; });
+    var half = Math.ceil(byY.length / 2);
+    [-1, 1].forEach(function (s) {
+      var group = s < 0 ? byY.slice(0, half) : byY.slice(half);
+      setLabelFont();
+      var row = group.sort(function (a, b) { return P[a.i].x - P[b.i].x; }).map(function (n) {
+        return { n: n, x: P[n.i].x, tw: ctx.measureText(n.page.title.toUpperCase()).width, side: s, row: true };
+      });
+      resetSpacing();
+      // spread the row out: first label at the left end, last at the
+      // right end, the rest evenly between (in hub order)
+      // (on a wide canvas, only somewhat wider than the brain)
+      var span = Math.min(W - 24, geo.bw * 1.6);
+      var used = row.reduce(function (a, L) { return a + L.tw; }, 0);
+      var gapX = row.length > 1 ? (span - used) / (row.length - 1) : 0;
+      var x = (W - span) / 2;
+      row.forEach(function (L) { L.x = row.length > 1 ? x + L.tw / 2 : W / 2; x += L.tw + gapX; });
+      var y = s < 0 ? geo.top - 8 - 40 : geo.top + geo.bh + 8 + 40;
+      row.forEach(function (L) {
+        // Drop each label from the row line towards its hub, as far as the
+        // outline allows: labels out at the sides can sit low beside the
+        // curve of the brain, so the row gets varying heights.
+        var hubY = P[L.n.i].y;
+        var near = Math.max(0, Math.abs(L.x - geo.cx) - L.tw / 2);   // label edge nearest the midline
+        var clear = labelPx / 2 + 10;
+        var leader = CFG.hubRadius + 3 + CFG.kinkRise + labelPx / 2 + 12;
+        var ly = s < 0 ? Math.min(outlineEdge(near, -1) - clear, hubY - leader)
+                       : Math.max(outlineEdge(near, 1) + clear, hubY + leader);
+        L.y = s < 0 ? Math.max(y, ly) : Math.min(y, ly);
+        L.box = { x: L.x - L.tw / 2 - CFG.hitPadX, y: y - labelPx / 2 - CFG.hitPadY,
+                  w: L.tw + 2 * CFG.hitPadX, h: labelPx + 2 * CFG.hitPadY };
         labels.push(L);
       });
     });
@@ -475,13 +542,24 @@
       ctx.strokeStyle = hot ? C.accent : C.ink3;
       ctx.lineWidth = CFG.leaderWidth;
       ctx.beginPath();
-      ctx.moveTo(q.x + s * (CFG.hubRadius + 3), q.y);
-      ctx.lineTo(L.x - s * CFG.kinkRun, q.y);
-      ctx.lineTo(L.x, L.y);
-      ctx.stroke();
-
-      ctx.textAlign = s < 0 ? 'right' : 'left';
-      var tx = s < 0 ? L.x - 8 : L.x + 8;
+      var tx;
+      if (L.row) {
+        // rows: straight up/down from the hub, then angled to the label
+        var end = L.y - s * (labelPx / 2 + 5);
+        ctx.moveTo(q.x, q.y + s * (CFG.hubRadius + 3));
+        ctx.lineTo(q.x, end - s * CFG.kinkRise);
+        ctx.lineTo(L.x, end);
+        ctx.stroke();
+        ctx.textAlign = 'center';
+        tx = L.x;
+      } else {
+        ctx.moveTo(q.x + s * (CFG.hubRadius + 3), q.y);
+        ctx.lineTo(L.x - s * CFG.kinkRun, q.y);
+        ctx.lineTo(L.x, L.y);
+        ctx.stroke();
+        ctx.textAlign = s < 0 ? 'right' : 'left';
+        tx = s < 0 ? L.x - 8 : L.x + 8;
+      }
       ctx.lineWidth = 4; ctx.strokeStyle = C.paper;     // halo where it crosses the mesh
       ctx.strokeText(text, tx, L.y + 0.5);
       ctx.fillStyle = hot ? C.accent : C.ink2;
@@ -500,7 +578,7 @@
     // name of the hovered region, quietly, next to it
     if (hovered && !hovered.page) {
       var hq = Q[hovered.i];
-      ctx.font = '400 ' + CFG.labelSize + 'px ' + C.mono;
+      ctx.font = '400 ' + labelPx + 'px ' + C.mono;
       ctx.textAlign = hovered.side < 0 ? 'right' : 'left';
       ctx.lineWidth = 4; ctx.strokeStyle = C.paper;
       var hx = hq.x + hovered.side * 10;
