@@ -347,8 +347,10 @@ def build(serve: bool = False, port: int = 8000) -> None:
     write(OUT / "blog" / "feed.xml", env.get_template("feed.xml").render(**ctx))
     write(OUT / "feed.xsl", env.get_template("feed.xsl").render(**ctx))
     write(OUT / "sitemap.xml", env.get_template("sitemap.xml").render(urls=urls, **ctx))
+    sitemaps = ["/sitemap.xml", *site.get("extra_sitemaps", [])]
     write(OUT / "robots.txt",
-          f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}/sitemap.xml\n")
+          "User-agent: *\nAllow: /\n\n"
+          + "".join(f"Sitemap: {site['url']}{path}\n" for path in sitemaps))
     write(OUT / "404.html", env.get_template("404.html").render(
         page={"title": "Page not found", "slug": "404", "url": "/404.html"}, **ctx))
 

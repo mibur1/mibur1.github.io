@@ -2,6 +2,13 @@ name: Micha Burkhardt
 url: https://michaburkhardt.de
 lang: en
 
+# Sitemaps of the course books, which are deployed separately on this domain.
+# Listed in robots.txt because Google only reads the one at the domain root.
+extra_sitemaps:
+  - /psy111/sitemap.xml
+  - /psy112/sitemap.xml
+  - /psy300/sitemap.xml
+
 tagline: ""   # optional line above the name on the homepage
 intro: >-   # homepage lede
   PhD student at Carl von Ossietzky Universität Oldenburg. I work on brain
