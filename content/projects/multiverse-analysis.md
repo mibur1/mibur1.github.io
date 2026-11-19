@@ -17,7 +17,8 @@ Brain-behaviour analyses involve a long chain of analytical decisions: how to cl
 data, which atlas to parcellate with, how to define brain connectivity, or how to model
 the brain-behaviour association itself. Each analytical decision has several defensible 
 options, and published papers often report exactly one path through that decision space.
-This introduces potential risks, such as results not reproducing well with new data.
+As a result, it is often unclear whether a finding is robust to slightly different analytical 
+choices, and findings may fail to replicate in new data.
 
 One approach to deal with this issue is [multiverse analysis](https://doi.org/10.1177/1745691616658637).
 This framework aims to analyse a larger number of defensible analysis pipelines and to report the 
